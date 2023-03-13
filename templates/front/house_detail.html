@@ -1,0 +1,174 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} RMS | Rooms Page {% endblock %}
+{% block content %}
+
+{% include 'partials/navbar.html' %}
+<main id="main">
+  <style>
+    label{
+      padding: 1%;
+    }
+  </style>
+
+    <!-- ======= Intro Single ======= -->
+    <section class="intro-single">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-8">
+            <div class="title-single-box">
+              <h1 class="title-single">Room No :{{house.house_number}}</h1>
+              <span class="color-text-a">{{house.address}}</span>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="index.html">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="property-grid.html">House Details</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  {{house.name}} house Details
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Intro Single-->
+
+    <!-- ======= Property Single ======= -->
+    <section class="property-single nav-arrow-b">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div id="property-single-carousel" class="swiper">
+              <div class="swiper-wrapper">
+                <div class="carousel-item-b swiper-slide">
+                  <img src="{{house.image1.url}}" alt="">
+                </div>
+                <div class="carousel-item-b swiper-slide">
+                  <img src="{{house.image2.url}}" alt="Img">
+                </div>
+              </div>
+              
+            </div>
+            <div class="property-single-carousel-pagination carousel-pagination"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+
+            <div class="row justify-content-between">
+              <div class="col-md-5 col-lg-4">
+                <div class="property-price d-flex justify-content-center foo">
+                  <div class="card-header-c d-flex">
+                    <div class="card-box-ico">
+                      <span class="bi bi-cash">Ksh </span>
+                    </div>
+                    <div class="card-title-c align-self-center">
+                      <h5 class="title-c"> {{house.price}}</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="property-summary mt-4">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="title-box-d section-t4">
+                        <h3 class="title-d">Quick Summary</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="summary-list">
+                    <ul class="list">
+                     
+                      <li class="d-flex justify-content-between">
+                        <strong>Location:</strong>
+                        <span>{{ house.location}}</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <strong>House Type:</strong>
+                        <span>{{house.house_type}}</span>
+                      </li>
+                      <!-- <li class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span>Sale</span>
+                      </li> -->
+
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7 col-lg-7 section-md-t3">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="title-box-d">
+                      <h3 class="title-d">House Description</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="property-description">
+                  <p class="description color-text-a">
+                   {{house.house_description}}
+                  
+            </div>
+            {% if house.booked == False %}
+                <div class="row section-t3">
+                  <div class="col-sm-12">
+                    <div class="title-box-d">
+                      <h3 class="title-d">Make Your Bookings</h3>
+                      {% include 'partials/messages.html' %}
+                    </div>
+                  </div>
+                </div>
+                <div class="amenities-list color-text-a">
+                  <form action="" method="post">
+                    {% csrf_token %}
+                    {{form|crispy}}
+
+                    <div class="col m-3">
+                      <input class="btn btn-outline-success" type="submit" value="Make Bookings">
+                    </div>
+                    <!-- <h3 class=" text-danger " >Lipa na mpesa intergration will be used for house Bookings</h3>
+                    <div class="col alert alert-info m-2">
+                      implementation is ongoing
+                    </div> -->
+                  </form>
+                </div> 
+            {% else %}
+            
+            <div class="amenities-list color-text-a mt-5">
+              <ul class="list-a no-margin">
+                <div class="row">
+                  <div class="col-md-2 bg-success">.</div>
+                  <div class="col-md-10">
+                    <div class=" alert alert-info">
+                      <h5> Room already booked</h>
+                    </div>
+                    <div class="col-md-2 bg-warning">.</div>
+                  </div>
+                  
+                </div>
+               
+                
+            </div> 
+            {% endif %}
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+      </div>
+    </section><!-- End Property Single-->
+
+    
+  </main>
+  {% include 'partials/footer.html' %}
+
+{% endblock %}

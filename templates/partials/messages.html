@@ -1,0 +1,17 @@
+{% if messages %}
+    {% for message in messages %}
+    <div class="row">
+        <div class="container accessibility-issue--info">
+            <div class="col-md-12 {% if message.tags %} alert alert-{{message.tags}} {% endif %} alert-dismissible fade show role="alert"">
+                <i class="bi bi-info-circle p-3" ></i>
+                {{message}}
+                <button type="button" class="btn-close p-3" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+  
+<div class="{% if message.tags %} alert alert-{message.tags}}  {% endif %}" role="alert">
+    
+</div>

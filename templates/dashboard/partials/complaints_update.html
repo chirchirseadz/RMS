@@ -1,0 +1,28 @@
+{% extends 'partials/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}RMS | Complaints updating {% endblock %}
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<br><br><br><br><br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card shadow p-3 mt-5">
+                <form method="post">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <input class="m-3 btn btn-success" type="submit" value="Update Booking">
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+

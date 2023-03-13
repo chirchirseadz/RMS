@@ -1,0 +1,109 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} Admin Dashboard {% endblock %}
+{% block content %}
+
+
+<style>
+  #card :hover{
+    transform: translateY(3px);
+  }
+  @media only screen and (max-width: 600px) {
+    #section {
+   margin-top: -25%;
+   
+  }
+}
+</style>
+
+<link href="{% static 'assets1/css/style.css' %}" rel="stylesheet">
+<body style="background-color: #fff;">
+  <main>
+    <br><br><br>  <br>
+    <section id="section"  class="section dashboard mt-xxl-5">
+      
+     <h3 style="font-family:'Times New Roman', Times, serif; text-align: center;" class="mt-lg-5 text-secondary p-3">My Dashboard</h3>
+     
+     <div  class="container">
+      {% include 'partials/messages.html' %}
+      <div class="row ">
+        <div  class="col-xxl-3 col-md-6 sh">  
+          <div   class="card info-card sales-card shadow">
+            <!-- This is the start of Users -->
+            <a href="{% url 'list_of_tenants' %}">
+            <div class="card-body text-center">
+                <img src="{{user.userprofile.profile_pic.url}}" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
+                <h5 class="my-3">{{user.userprofile.name|title}}</h5>
+                <p class="text-muted mb-1"></p>
+                <!-- <p class="text-muted mb-4">{{user.}}</p> -->
+                <div class="d-flex justify-content-center mb-2">
+                <!-- <button type="button" class="btn btn-primary btn-block"></button> -->
+                
+                <a class="btn btn-outline-primary ms-1 btn-block" href="{% url 'user_profile'  %}">View My Profile</a>
+                
+                </div>
+            </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-xxl-5 col-md-6">  
+          <div class="card info-card sales-card shadow">
+            <!-- This is the start of Users -->
+            <a href="###">
+              <div class="card-body">
+                <h5 class="card-title">Rent Payment</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-building text-success"></i>
+                  </div>
+                  <div class="ps-3">
+                    
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-xxl-4 col-md-6" id="compl">  
+          <div class="card info-card sales-card shadow">
+            <!-- This is the start of Users -->
+            <a href="{% url 'make_complaint' %}">
+              <div class="card-body">
+                <h5 class="card-title">File Complaints</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-activity  text-success"></i>
+                  </div>
+                  <div class="ps-3">
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div> 
+        <h3 class="text-secondary mb-lg-5 " style="text-align: center; font-family: 'Times New Roman', Times, serif;">News and Notices</h3>
+        <div class="card p-3">
+            {% for notice in notices %}
+            <hr>
+            <h5 class="text-secondary">{{notice.subject|title}}</h5>
+            <p class="text-dark" >{{notice.message|title}}</p>
+            <i class="text-success">{{notice.notice_date}}</i>
+            <hr>
+            {% endfor %}
+        </div>
+       </div>
+     </div>
+     
+      
+        
+      
+          
+    </section>
+  </main>
+</body>
+</html>
+
+{% endblock %}

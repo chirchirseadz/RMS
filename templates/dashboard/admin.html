@@ -1,0 +1,230 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} Admin Dashboard {% endblock %}
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<style>
+  #card :hover{
+    transform: translateY(3px);
+  }
+</style>
+
+<link href="{% static 'assets1/css/style.css' %}" rel="stylesheet">
+<body style="background-color: #fff;">
+  <main>
+    <br><br><br>  <br>
+    <section class="section dashboard mt-5">
+      
+     <h3 style="font-family:'Times New Roman', Times, serif; text-align: center;" class="mt-5 text-secondary p-3">Admin Dashboard</h3>
+     
+     <div class="container">
+      {% include 'partials/messages.html' %}
+      <div class="row ">
+       
+        <div  class="col-xxl-4 col-md-6 sh">  
+          <div   class="card info-card sales-card shadow">
+            <!-- This is the start of Users -->
+            <a href="{% url 'list_of_tenants' %}">
+              <div class="card-body">
+                <h5 class="card-title"> Manage Tenants</h5>
+                <div class="d-flex align-items-center">
+                  <div class=" card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people text-success"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{number_of_tenants}}</h6>
+                  </div>
+                  <div class="col">
+                  <!-- <a id="card" class="btn btn-outline-success m-1 P-1 " href="">Active Tenants</a>  -->
+                  <!-- <a id="card" class="btn btn-outline-danger m-1" href="{% url 'list_of_in_active_tenants' %}">In active Tenants</a> -->
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-xxl-4 col-md-6">  
+          <div class="card info-card sales-card shadow">
+            <!-- This is the start of Users -->
+            <a href="{% url 'apartment_list' %}">
+              <div class="card-body">
+                <h5 class="card-title">Apartments</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-building text-success"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{number_of_apartments}}</h6>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-xxl-4 col-md-6">  
+          <div class="card info-card sales-card shadow">
+            <!-- This is the start of Users -->
+            <a href="{% url 'houses_list' %}">
+              <div class="card-body">
+                <h5 class="card-title">Rooms</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-house  text-success"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{number_of_houses}}</h6>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div> 
+
+       </div>
+
+     </div>
+     
+      <div class="container">
+        <h3 class="text-secondary m-3" style="text-align: center; font-family: 'Times New Roman', Times, serif;"> Notifications and Messages</h3>
+      <div class="row">
+          <div class="col-lg-3 ">
+            <div class="card mb-4 shadow">
+              <div class="card-body text-center">
+                <img src="{{user.userprofile.profile_pic.url}}" alt="avatar"
+                  class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
+                <h5 class="my-3">{{user.userprofile.name|title}}</h5>
+                <p class="text-muted mb-1"></p>
+                <!-- <p class="text-muted mb-4">{{user.}}</p> -->
+                <div class="d-flex justify-content-center mb-2">
+                  <!-- <button type="button" class="btn btn-primary btn-block"></button> -->
+                  
+                  <a class="btn btn-outline-primary ms-1 btn-block" href="{% url 'user_profile'  %}">View My Profile</a>
+                  
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-xxl-5 col-md-3" >  
+            <div class="card info-card sales-card shadow">
+              <!-- This is the start of Users -->
+              <a href="{% url 'complaints' %}">
+                <div class="card-body">
+                  <h5 class="card-title">Complaints</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-building text-success"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6></h6>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col-xxl-4 col-md-3">  
+            <div class="card info-card sales-card shadow">
+              <!-- This is the start of Users -->
+              <a href="{% url 'make_notification' %}">
+                <div class="card-body">
+                  <h5 class="card-title"> Make Notification To Tenants </h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-people  text-success"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{number_of_users}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <!-- <div class="col-xxl-3 col-md-3">  
+            <div class="card info-card sales-card shadow"> -->
+              <!-- This is the start of Users -->
+              <!-- <a href="">
+                <div class="card-body">
+                  <h5 class="card-title"> Tenant Notifications</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-people  text-success"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{number_of_users}}</h6>
+                    </div>
+                  </div>
+                </div>
+              </a> -->
+            <!-- </div>
+          </div> -->
+      </div>
+          <!-- ANOTHER ROW -->
+        
+         <!-- #####################################################################################  -->
+         
+            <div class="card recent-sales overflow-auto shadow">
+  
+              <div class="card-body">
+                <h5 class="card-title">Recent Room Booking Requests<span>| Today</span></h5>
+  
+                <table class="table table-borderless datatable">
+                  <thead>
+                    <tr>
+                      
+                      <th scope="col">Request By:</th>
+                      <th scope="col">Room Requested</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Phone Number</th>
+                      <th scope="col">Request info</th>
+                      <th scope="col">Date of Request</th>
+                      <th scope="col">Request Status</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for request in house_requests %}
+                    
+                    <tr>
+                      <td>{{request.requested_by}}</td>
+                      <td>{{request.room_booked}}</td>
+                      <td>{{request.email}}</td>
+                      <td>{{request.phone_number}}</td>
+                      <td>{{request.request_info}}</td>
+                      <td>{{request.date_requested}}</td>
+                      <td>{{request.status}}</td>
+                      <td><a class="btn btn-success" href="{% url 'booking_update' request.id %}"> check </a></td>
+
+
+                      
+                      
+                    </tr>
+                    {% endfor %}                   
+                  
+                  </tbody>
+                </table>
+  
+              </div>
+  
+            </div>
+         
+          <!-- ############################################################################################# -->
+          </div>  
+      </div>
+
+
+    </section>
+    
+
+  </main>
+  
+</body>
+
+</html>
+
+{% endblock %}

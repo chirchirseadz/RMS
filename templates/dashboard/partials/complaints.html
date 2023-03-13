@@ -1,0 +1,76 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} RMS | Complaints   {% endblock %}
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<br><br><br><br><br><br>
+
+{% if user.is_admin %}
+
+
+<div class="container mt-5">
+  {% include 'partials/messages.html' %}
+    <div class="card-body mt-5">
+      
+      <div class="card p-3 shadow m-3">
+        <h4 style="text-align: center; "  class=" mt-3 p-2 text-success ">TENANT'S COMPLAINTS</h4>
+      </div>
+
+        <table class="table table-borderless datatable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Reported By</th>
+              <
+              <th scope="col">Priority Status</th>
+              <th scope="col">Main Issue</th>
+              <th scope="col">Complaint Date</th>
+              <th scope="col">Last Checked</th>
+              <th class="bg-success text-white" scope="col">Status</th>
+              
+              
+            </tr>
+          </thead>
+          <tbody>
+            {% for complaint in complaints %}
+           
+            <tr>
+              <th scope="row"><a class="bg-success" href="#">.</a></th>
+              <td>{{complaint.reported_by}}</td>
+              
+              <td>{{complaint.priority}}</td>
+              <td>{{complaint.description}}</td>
+              <td>{{complaint.created}}</td>
+              <td>{{complaint.updated}}</td>
+              <td>{{complaint.status}}</td>
+              
+              
+                <!-- {% if user.is_active == True %}
+              <td><span class="badge bg-success">Active</span></td>
+                {% else %} 
+                <td><span class="badge bg-danger">In_active</span></td>
+                {% endif %} -->
+                
+               
+                <td><a class="btn btn-primary btn-sm" href="{% url 'complaints_update' complaint.id %}">Update</a></td>
+                <!-- <td><a class="btn btn-danger btn-sm" href="">Del</a></td> -->
+            </tr>
+            
+            
+            {% endfor %}
+            
+           
+           
+          </tbody>
+        </table>
+
+      </div>
+
+</div>
+  
+
+
+
+{% endif %}
+{% endblock %}

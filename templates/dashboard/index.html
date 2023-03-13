@@ -1,0 +1,15 @@
+{% extends '../partials/base.html' %}
+{% load static %}
+{% block title %}RMS | Dashboard{% endblock %}
+{% block content %}
+{% include '../partials/navbar.html' %}
+
+{% if user.is_authenticated and user.is_admin %}
+{% include 'dashboard/admin.html' %}
+{% else %}
+{% include 'dashboard/tenant.html' %}
+{% endif %}
+
+
+{% include 'dashboard/footer.html' %}
+{% endblock %}

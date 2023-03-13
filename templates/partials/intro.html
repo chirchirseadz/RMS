@@ -1,0 +1,42 @@
+{% load static %}
+
+<style>
+  @media only screen and (max-width: 600px) {
+    #title {
+      font-size: 30px;
+  }
+ 
+}
+</style>
+<div class="intro intro-carousel swiper position-relative">
+    <div class="swiper-wrapper">
+      {% for data in slider_info %}
+      <div id="image" class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url({{data.image.url}})">
+        <div class="overlay overlay-a"></div>
+        <div class="intro-content display-table">
+          <div class="table-cell">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8">
+                  <div class="intro-body">
+                    <p class="intro-title-top">{{data.slide_title}}
+                      <br> {{data.locatioqn}}
+                    </p>
+                    <h3 id="title"  class="intro-title mb-4 ">
+                      <span class="color-b">{{data.id}}</span> {{data.house_type}}
+                      <br> 
+                    </h3 id="title" >
+                    <p class="intro-subtitle intro-price">
+                      <span class="price-a">rent | KSh {{data.rent}}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>

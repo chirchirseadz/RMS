@@ -1,0 +1,105 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} RMS | List Of Apartments  {% endblock %}
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<br><br><br><br><br><br>
+<br>
+
+<style>
+    @media only screen and (max-width: 600px) {
+    #section {
+   margin-top: -30%;
+  }
+}
+</style>
+
+{% if user.is_admin %}
+
+{% if number_of_appartments == 0 %}
+
+<div class="container">
+    <div  class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="card p-3 mt-lg-5">
+          <h1 style="text-align: center;" class="text-danger mt-5 mb-2"> NO APARTMENTS AVAILABLE !! </h1>
+          <a class="btn btn-success p-3 m-3 mb-5" href="{% url 'index_page' %}">Back</a>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+{% else %}
+
+
+<div class="container">
+  <div id="section"  class="row ">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 mb-5">
+      <div class="card shadow p-4">
+      <a class="btn btn-success" href="{% url 'add_apartmdent' %}"> Add Apartment</a>
+      </div>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  <div class="row">
+    {% for apartment in apartment %}
+    <div class="col-md-3">
+      <div class="card-box-a card-shadow">
+        <div class="img-box-a">
+          <img src="{{apartment.image.url}}" alt="" class="img-a img-fluid" " >
+        </div>
+        <div class="card-overlay">
+          <div class="card-overlay-a-content">
+            <div class="card-header-a">
+              <h2 class="card-title-a">
+                <a href="#">{{apartment.name}}
+
+
+                  <p></p>
+                  <br /> <span style="font-size: 60%;" class="text-warning">{{apartment.description}}</span></a>
+              </h2>
+            </div>
+            <div class="card-body-a">
+              <div class="price-box d-flex">
+                <!-- <span class="price-a"></span>  -->
+                <span class="price-a">Location | {{apartment.location}}</span> 
+              </div>
+              <a href="{% url 'apartment_update' apartment.id %}" class="link-a">Click here to Update Appartment
+                <span class="bi bi-chevron-right"></span>
+              </a>
+            </div>
+            
+            <!-- <div class="card-footer-a">
+              <ul class="card-info d-flex justify-content-around">
+                
+                <li>
+                  <h4 class="card-info-title">Beds</h4>
+                  <span>2</span>
+                </li>
+                <li>
+                  <h4 class="card-info-title">Baths</h4>
+                  <span>4</span>
+                </li>
+               
+              </ul>
+            </div> -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% endif %}
+
+{% endif %}
+
+
+{% endblock %} 
+ <td><a class="btn btn-primary btn-sm" href="{% url 'apartment_update' name.id %}">Edit</a></td>

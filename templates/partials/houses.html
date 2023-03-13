@@ -1,0 +1,79 @@
+{% load static %}
+
+<section class="section-property section-t8">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="title-wrap d-flex justify-content-between">
+            <div class="title-box">
+              <h2 class="title-a">Rental Houses</h2>
+            </div>
+            <div class="title-link">
+              <a href="{% url 'houses' %}">All Houses
+                <span class="bi bi-chevron-right"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="property-carousel" class="swiper">
+        <div class="swiper-wrapper">
+
+        
+         {% for house in houses %}
+
+         <div class="carousel-item-b swiper-slide">
+          <div class="card-box-a card-shadow">
+            <div class="img-box-a">
+              <img src="{{house.image1.url}}" alt="" class="img-a img-fluid">
+            </div>
+            <div class="card-overlay">
+              <div class="card-overlay-a-content">
+                <div class="card-header-a">
+                  <h2 class="card-title-a">
+                    <a href="property-single.html">{{house.name}}
+
+                      <br /> <span  style="font-size: 70%;" class="text-warning" >{{ house.house_type}}</span> </a>
+                  </h2>
+                </div>
+                <div class="card-body-a">
+                  <div class="price-box d-flex">
+                    <span class="price-a">rent | Ksh {{house.price}}</span>
+                  </div>
+                  <a href="{% url 'house_detail' house.id %}" class="link-a">Click here to view
+                    <span class="bi bi-chevron-right"></span>
+                  </a>
+                </div>
+                <!-- <div class="card-footer-a">
+                  <ul class="card-info d-flex justify-content-around">
+                    <li>
+                      <h4 class="card-info-title">Area</h4>
+                      <span>340m
+                        <sup>2</sup>
+                      </span>
+                    </li>
+                   
+                  </ul>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+         {% endfor %}
+
+         
+          
+
+        
+          
+          <!-- End carousel item -->
+        </div>
+      </div>
+
+
+      
+      <div class="propery-carousel-pagination carousel-pagination"></div>
+
+    </div>
+  </section>

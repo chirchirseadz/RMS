@@ -1,0 +1,52 @@
+{% extends 'partials/base.html' %}
+{% block title %} Embu housing | homepage{% endblock %}
+
+{% block content  %}
+
+<body>
+
+
+    <!-- ======= Header/Navbar ======= -->
+    {% include 'partials/navbar.html' %}
+    <!-- End Header/Navbar -->
+  
+    <!-- ======= Intro Section ======= -->
+    {% include 'partials/intro.html' %}
+
+    <!-- End Intro Section -->
+  
+    <main id="main">
+  
+      <!-- ======= Services Section ======= -->
+    
+      <!-- End Services Section -->
+  
+      <!-- ======= Latest Properties Section ======= -->
+      {% include 'partials/houses.html' %}
+      <!-- End Latest Properties Section -->
+  
+      <!-- ======= Agents Section ======= -->
+        {% include 'partials/agents.html' %}
+      <!-- End Agents Section -->
+  
+      <!-- ======= Latest News Section ======= -->
+        
+      <!-- End Latest News Section -->
+  
+      <!-- ======= Testimonials Section ======= -->
+        
+      <!-- End Testimonials Section -->
+  
+    </main>
+    <!-- End #main -->
+  
+    <!-- ======= Footer ======= -->
+    {% include 'partials/footer.html' %}
+    <!-- End  Footer -->
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+  </body>
+  
+
+{% endblock %}

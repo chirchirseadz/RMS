@@ -1,0 +1,164 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} RMS | Available Rooms Page {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<body>
+
+
+    <!-- ======= Header/Navbar ======= -->
+    {% include 'partials/navbar.html' %}
+    <!-- End Header/Navbar -->
+  
+
+    <style>
+      
+    </style>
+    <main id="main">
+  
+      <!-- ======= Intro Single ======= -->
+      <section class="intro-single">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 col-lg-8">
+              <div class="title-single-box">
+                {% if house_count == 0 %}
+                <h5 id="title" class=" alert alert-danger  ">No Available Rooms !!!</h5>
+                {% else %}
+                <h5 id="title" class=" title-single  "> Available Rooms</h5>
+               
+                
+                {% endif %}
+                
+                <span class="color-text-a"></span>
+              </div>
+              {% include 'partials/messages.html' %}
+            </div>
+            <div class="col-md-12 col-lg-4">
+              
+              <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'index_page' %}">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                   available Rooms
+                  </li>
+                  
+                  <div class="">
+                    <div class="container">
+                      <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+                        <i class="bi bi-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </ol>
+              </nav>
+             </div>
+          </div>     
+        </div>
+        
+        
+  
+  
+    <!-- ======= Property Search Section ======= -->
+    <div class="click-closed"></div>
+    <!--/ Form Search Star /-->
+    <div class="box-collapse">
+      <div class="title-box-d">
+        <h3 class="title-d">Search Rooms</h3>
+        
+      </div>
+      <span class="close-box-collapse right-boxed bi bi-x"></span>
+
+      <div class="container p-3">
+      <form method="get">
+        {{myFilter.form|crispy}}
+       <div class="col ml-2 mt-3">
+        <input class="btn btn-primary" type="submit" value="search">
+       </div>
+      </form>
+      </div>
+      
+    </div>
+    <!-- End Property Search Section -->
+   </section><!-- End Intro Single-->
+  
+      <!-- ======= Property Grid ======= -->
+      
+      <section class="property-grid grid">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="grid-option">
+
+              </div>
+            </div>
+
+            {% for house in houses %}
+            {% if house.booked == False and  house.paid == False %}
+            <div class="col-md-3">
+              <div class="card-box-a card-shadow">
+                <div class="img-box-a">
+                  <img src="{{house.image1.url}}" alt="" class="img-a img-fluid" " >
+                </div>
+                <div class="card-overlay">
+                  <div class="card-overlay-a-content">
+                    <div class="card-header-a">
+                      <h2 class="card-title-a">
+                        <a href="#">{{house.name}}
+                          <br /> <span style="font-size: 60%;" class="text-warning">{{ house.house_type}}</span></a>
+                      </h2>
+                    </div>
+                    <div class="card-body-a">
+                      <div class="price-box d-flex">
+                        <span class="price-a">rent | Ksh {{house.price}}</span> 
+                      </div>
+                      <a href="{% url 'house_detail' house.id %}" class="link-a">Click here to view
+                        <span class="bi bi-chevron-right"></span>
+                      </a>
+                    </div>
+                    
+                    <!-- <div class="card-footer-a">
+                      <ul class="card-info d-flex justify-content-around">
+                        
+                        <li>
+                          <h4 class="card-info-title">Beds</h4>
+                          <span>2</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Baths</h4>
+                          <span>4</span>
+                        </li>
+                       
+                      </ul>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+ 
+          
+        </div>
+      </section>
+
+      
+    <!-- End Property Grid Single-->
+  
+    </main>
+    <!-- End #main -->
+  
+    <!-- ======= Footer ======= -->
+    {% include 'partials/footer.html' %}
+   <!-- End  Footer -->
+  
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+ 
+  
+  </body>
+{% endblock %}

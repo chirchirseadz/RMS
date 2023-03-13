@@ -1,0 +1,41 @@
+When the user books and pays for the house,
+the house will not be not be available in the Available houses page
+
+
+
+Notifications and reports are based on the dashboard
+
+
+
+
+
+
+<table class="table table-borderless datatable">
+                  <thead>
+                    <tr>
+                      
+                      <th scope="col">Request By:</th>
+                      <th scope="col">Room Requested</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Phone Number</th>
+                      <th scope="col">Request info</th>
+                      <th scope="col">Date of Request</tr>
+                      <th scope="col">Request Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for request in house_requests %}
+                    <tr>
+                      <td>{{request.requested_by}}</td>
+                      <td>{{request.room_booked}}</td>
+                      <td>{{request.email}}</td>
+                      <td>{{request.phone_number}}</td>
+                      <td>{{request.request_info}}</td>
+                      <td>{{request.date_requested}}</td>
+                      <td>{{request.appoved}}</td>
+                      
+                    </tr>
+                    {% endfor %}                   
+                  
+                  </tbody>
