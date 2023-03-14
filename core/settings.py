@@ -85,6 +85,7 @@ TEMPLATES = [
                 'houses.views.categories',
                 'houses.views.nav_info',
                 'houses.views.slider_info',  
+                'dashboard.views.contacts',
             ],
         },
     },

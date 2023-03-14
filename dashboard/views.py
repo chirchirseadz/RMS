@@ -4,12 +4,13 @@ from django.contrib.auth.models import User
 from .models import RoomBooking, Complaints, NoticesToTenants
 from houses.models import Apartments, Category,Rooms, Navigation, Slider, Contacts
 from houses.forms import RoomBookingForm
-from . forms import ActivateUserForm, ApartmentAddForm, HouseAddForm, ManageTenantForm, AdminComplaintsForm, NoticesToTenantsForm, ComplaintsForm
+from . forms import ActivateUserForm, ApartmentAddForm, HouseAddForm, ManageTenantForm, AdminComplaintsForm, NoticesToTenantsForm, ComplaintsForm, SliderForm, ContactForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import BadHeaderError, send_mail
 from django.db import transaction
 from houses.forms import AdminBookingUpdateForm
+from . utils import resize_image
 
 # Create your views here.
 @login_required(login_url='login')
@@ -116,7 +117,7 @@ def ManageTenant(request, id):
             messages.success(request, 'Tenant Details Updated Successfully !!! ')
             return redirect("index_page")
         else:
-            messages.error(request, 'Tenant Details Not Updated Successfully !!!' )
+            messages.warning(request, 'Tenant Details Not Updated Successfully !!!' )
     else:
         user_form = ActivateUserForm(instance=user)
         tenant_form = ManageTenantForm(instance=tenant)
@@ -139,7 +140,10 @@ def AddApartment(request):
     if request.method == 'POST':
         form = ApartmentAddForm(request.POST, request.FILES)
         if form.is_valid():
+            image = form.cleaned_data.get('image')
+            image = resize_image(image, 500, 600)
             data = form.save(commit=False)
+            data.image = image  
             data.save()
             messages.success(request, 'Apartment Added Successfully !! ')
             return redirect("index_page")
@@ -168,7 +172,11 @@ def ApartmentUpdate(request, id):
     if request.method == 'POST':
         update_form = ApartmentAddForm(request.POST, instance=apartment_obj)
         if update_form.is_valid():
-            update_form.save()
+            image = update_form.cleaned_data.get('image')
+            image = resize_image(image, 500, 600)
+            data = update_form.save(commit=False)
+            data.image = image  
+            data.save()
             messages.success(request, 'Apartment Updated Sucessfully !!')
             return redirect('index_page')
         else:
@@ -183,9 +191,11 @@ def ApartmentUpdate(request, id):
 
 @login_required(login_url='login')
 def DeleteApartment(request, id):
-    # return render(request, 'dashboard/partials/apartments_update.html') 
-    pass
-
+    apartments = Apartments.objects.get(id=id)
+    apartments.delete()
+    messages.success(request, 'Apartment deleted successfully')
+    
+    return redirect('index_page')
 
 # ROOMS ADMIN FUNCTIONALITIES
 @login_required(login_url='login')
@@ -193,7 +203,17 @@ def AddHouse(request):
     if request.method == 'POST':
         add_form = HouseAddForm(request.POST, request.FILES)
         if add_form.is_valid():
-            add_form.save()
+            image1 = add_form.cleaned_data.get('image1')
+            image1 = resize_image(image1, 500, 600)
+            image2 = add_form.cleaned_data.get('image2')
+            image2 = resize_image(image2, 500, 600)
+            image3 = add_form.cleaned_data.get('image3')
+            image3 = resize_image(image3, 500, 600)
+            data = add_form.save(commit=False)
+            data.image1 = image1
+            data.image2 = image2
+            data.image3 = image3
+            data.save()
             messages.success(request, 'House Added succesfully !! ')
             return redirect("index_page")
     else:
@@ -220,7 +240,17 @@ def HouseUpdate(request, id):
     if request.method == 'POST':
         form = HouseAddForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
-            form.save()
+            image1 = form.cleaned_data.get('image1')
+            image1 = resize_image(image1, 500, 600)
+            image2 = form.cleaned_data.get('image2')
+            image2 = resize_image(image2, 500, 600)
+            image3 = form.cleaned_data.get('image3')
+            image3 = resize_image(image3, 500, 600)
+            data = form.save(commit=False)
+            data.image1 = image1
+            data.image2 = image2
+            data.image3 = image3
+            data.save()
             messages.success(request, 'House Added succesfully !! ')
             return redirect("index_page")
     else:
@@ -329,7 +359,93 @@ def FileComplaint(request):
     return render(request, 'dashboard/partials/make_complaint.html', context)
 
 
+#  Create Slider
+def createslider(request):
+    if request.method == 'POST':
+        form = SliderForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Slider Created successfully !! ')
+            return redirect('index_page')
+    else:
+        form = SliderForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/partials/slider.html', context)
 
+# VIEW SLIDER
+
+def viewsliders(request):
+    slider = Slider.objects.all()
+    number_of_slides = slider.count()
+    context = {
+        'slider': slider,
+        'number_of_slides': number_of_slides
+    }
+    return render(request, 'partials/sliders.html', context)
+
+
+def updateslider(request, id):
+    slider = Slider.objects.get(id=id)
+    if request.method == 'POST':
+        form = SliderForm(request.POST, request.FILES, instance=slider)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Slider Updated successfully !! ')
+            return redirect('index_page')
+    else:
+        form = SliderForm(instance=slider)
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/partials/slider_update.html', context)
+    
+
+# DELETE SLIDER
+
+def deleteslider(request, id):
+    slider = Slider.objects.get(id=id)
+    slider.delete()
+
+
+def create_contacts(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Contacts Created successfully !!! ')
+            return redirect('index_page')
+        else:
+            messages.error(request, 'Contacts not created. Check Your inputs')
+    else:
+        form = ContactForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/partials/contact_create.html', context)
+
+
+def view_contacts(request):
+    contacts = Contacts.objects.all()
+    context = {
+        'contacts': contacts
+    }
+    return render(request, 'dashboard/partials/contactlist.html', context)
+
+
+def delete_contacts(request,id):
+    contact = Contacts.objects.get(id=id)
+    contact.delete()
+
+    messages.success(request, 'Contact Deleted Successfully !!')
+    return redirect('index_page')
+
+
+def contacts(request):
+    return {
+        'contacts': Contacts.objects.all()
+    }
 
 # def MessagesToTenantsUpdate(request, id):
 #     return render(request, 'dashboard/partials/complaints_update.html', context)

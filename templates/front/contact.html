@@ -21,7 +21,7 @@
             <div class="title-single-box">
               <h1 class="title-single">Contact US</h1>
               <span class="color-text-a">
-                {% for contact in contact_info%}
+                {% for contact in contacts%}
                 {{contact.contact_info}}
                 {% endfor %}
               </span>
@@ -109,14 +109,14 @@
                     <div class="icon-box-content">
                       <p class="mb-1">Email.
                         <span class="color-a">
-                          {% for contact in contact_info%}
+                          {% for contact in contacts%}
                             {{contact.email}}
                           {% endfor %}
                         </span>
                       </p>
                       <p class="mb-1">Phone.
                         <span class="color-a">
-                          {% for contact in contact_info%}
+                          {% for contact in contacts%}
                             {{contact.phone}}
                           {% endfor %}
                         </span>
@@ -134,11 +134,11 @@
                     </div>
                     <div class="icon-box-content">
                       <p class="mb-1">
-                        {% for contact in contact_info%}
+                        {% for contact in contacts%}
                             {{contact.address}}
                         {% endfor %}
                         <br> 
-                        {% for contact in contact_info%}
+                        {% for contact in contacts%}
                             {{contact.location}}
                         {% endfor %}
                       </p>

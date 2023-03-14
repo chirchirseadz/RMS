@@ -1,0 +1,102 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} RMS | Slider | list  {% endblock %}
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<br><br><br><br><br><br>
+<br>
+
+<style>
+    @media only screen and (max-width: 600px) {
+    #section {
+   margin-top: -30%;
+  }
+}
+</style>
+
+{% if user.is_admin %}
+
+{% if number_of_slides == 0 %}
+
+<div class="container">
+    <div  class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="card p-3 mt-lg-5">
+          <h1 style="text-align: center;" class="text-danger mt-5 mb-2"> No More Sliders </h1>
+          <a class="btn btn-secondary p-3 m-3 mb-5" href="{% url 'create_slider' %}">Create slider</a>
+          <a class="btn btn-success p-3 m-3 mb-5" href="{% url 'index_page' %}">Back</a>
+          
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+{% else %}
+
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-" >
+        <div class="card recent-sales overflow-auto shadow">
+  
+          <div class="card-body">
+            
+  <div class="row">
+    <div class="col-md-" >
+      <div class="card recent-sales overflow-auto shadow">
+        <a class="btn btn-secondary p-3 m-3 mb-5" href="{% url 'create_slider' %}">Create slider</a>
+        <div class="card-body">
+          
+
+          <table class="table table-borderless datatable m-3">
+            
+            <thead>
+              
+              <tr>
+                <th scope="col">Slider Title</th>
+                <th scope="col">Room Category</th>
+                <th scope="col">Room Rent</th>
+                <th scope="col">Room location</th>
+
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+              {% for slider in slider %}
+              <tr>
+                <td>{{slider.slide_title}}</td>
+                <td>{{slider.house_type}}</td>
+                <td>{{slider.rent}}</td>
+                <td>{{slider.location}}</td>
+                <td><a class="btn btn-primary" href="{% url 'update_slider' slider.id %}"> Edit</a></td>
+                <td><a class="btn btn-danger" href="{% url 'del_slider' slider.id %}"> Del</a></td>
+                
+              </tr>
+
+              {% endfor  %}
+              
+     
+      
+      
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div> 
+
+
+{% endif %}
+
+{% endif %}
+
+
+{% endblock %} 
+ <td><a class="btn btn-primary btn-sm" href="{% url 'apartment_update' name.id %}">Edit</a></td>

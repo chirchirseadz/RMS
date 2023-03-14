@@ -71,6 +71,16 @@
           <li class="nav-item">
             <a class="nav-link " href="{% url 'contact' %}">Contact</a>
           </li>
+         {% if user.is_admin %}
+         <li class="nav-item">
+          <a class="btn btn-outline-success " href="{% url 'view_slider' %}">Slider</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-secondary btn-sm mt-lg-1 " href="{% url 'view_contact' %}"> contact info</a>
+        </li>
+        
+         {% endif %}
+          
           <span class="text-white">.................................</span>
           {% if user.is_authenticated %}
           <li class="nav-item">

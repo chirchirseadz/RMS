@@ -25,6 +25,7 @@
       <div class="col-md-8">
         <div class="card p-3 mt-lg-5">
           <h1 style="text-align: center;" class="text-danger mt-5 mb-2"> NO APARTMENTS AVAILABLE !! </h1>
+          <a class="btn btn-secondary p-3 m-3 mb-5" href="{% url 'add_apartmdent' %}">ADD APARTMENT</a>
           <a class="btn btn-success p-3 m-3 mb-5" href="{% url 'index_page' %}">Back</a>
         </div>
       </div>
@@ -59,17 +60,19 @@
 
 
                   <p></p>
-                  <br /> <span style="font-size: 60%;" class="text-warning">{{apartment.description}}</span></a>
+                  <br /> <span style="font-size: 60%;" class="text-white">{{apartment.description}}</span></a>
               </h2>
             </div>
             <div class="card-body-a">
               <div class="price-box d-flex">
                 <!-- <span class="price-a"></span>  -->
                 <span class="price-a">Location | {{apartment.location}}</span> 
+                
               </div>
-              <a href="{% url 'apartment_update' apartment.id %}" class="link-a">Click here to Update Appartment
+              <a href="{% url 'apartment_update' apartment.id %}" class="link-a">Click here to Update
                 <span class="bi bi-chevron-right"></span>
               </a>
+              <a class="btn btn-outline-danger mt-lg-3" href="{% url 'apartment_delete' apartment.id %}">Delete Apartment</a>
             </div>
             
             <!-- <div class="card-footer-a">

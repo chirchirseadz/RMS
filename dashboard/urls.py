@@ -17,6 +17,7 @@ urlpatterns = [
     path('apartments/add/', views.AddApartment, name='add_apartmdent'),
     path('apartments/view/', views.ApartmentsView, name='apartment_list'),
     path('apartments/update/<int:id>', views.ApartmentUpdate, name='apartment_update'),
+    path('apartments/delete/<int:id>', views.DeleteApartment, name='apartment_delete'),
 
 
     # HOUSES ROUTES
@@ -35,8 +36,19 @@ urlpatterns = [
     # MAKE NOTIFICATIONS TO TENANTS
     path('make/notifications/view/', views.MessagesToTenants, name='make_notification'),
     
-    
 
+    # SLIDER ROUTES
+
+    path('make/slider/', views.createslider, name='create_slider'),
+    path('View/slider/', views.viewsliders, name='view_slider'),
+    path('del/slider/<int:id>/', views.deleteslider, name='del_slider'),
+    path('update/slider/<int:id>', views.updateslider, name='update_slider'),
+
+    
+    # CONTACTS ADD
+    path('make/contact/', views.create_contacts, name='create_contact'),
+    path('view/contact/', views.view_contacts, name='view_contact'),
+    path('del/contact/<int:id>/', views.delete_contacts, name='delete_contact'),
 
 
 ]

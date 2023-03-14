@@ -54,9 +54,9 @@ class Rooms(models.Model):
         ('Tenth Floor', 'Tenth Floor'),
     )
     STATUS_CHOICES = [
-        ('Currently Occupied', 'Currently Occupied'),
-        ('Ready To Move In', 'Ready To Move In'),
-        ('Under Maintanance', 'Under Maintanance'),
+        ('Available', 'Available'),
+        ('Not Available', 'Not Available'),
+        
     ]
     MAINTAINANCE = [
         ('Under Maintainance', 'Under Maintainance'),
@@ -126,7 +126,7 @@ class Contacts(models.Model):
     location = models.CharField(max_length=15, null=True , blank=True)
 
     def __str__(self):
-        return self.email
+        return self.name
 
     class Meta:
         verbose_name_plural = 'Contacts'

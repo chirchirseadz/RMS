@@ -1,7 +1,7 @@
 from django import forms
 from .models import MessagesFromTenants, AllocateRoom, NoticesToTenants, Complaints
 from users.models import  UserProfile, CustomUser
-from houses.models import Apartments, Rooms
+from houses.models import Apartments, Rooms, Slider,Contacts
 
 
 class Userform(forms.ModelForm):
@@ -28,6 +28,7 @@ class ManageTenantForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = '__all__'
+        exclude = ('name',)
 
 class NoticesToTenantsForm(forms.ModelForm):
    
@@ -87,9 +88,6 @@ class HouseAddForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['paid', 'booked']
 
-
-
-
 class AllocateRoomForm(forms.ModelForm):
     
     class Meta:
@@ -99,3 +97,27 @@ class AllocateRoomForm(forms.ModelForm):
                 'allocate_date': forms.DateInput(),
                 
             }
+
+
+class SliderForm(forms.ModelForm):
+    class Meta:
+        model = Slider
+        fields = '__all__'
+
+
+
+class ContactForm(forms.ModelForm):
+
+    name = forms.CharField(widget= forms.TextInput
+                           (attrs={'placeholder':'Enter Contact Name'}))
+    email = forms.EmailField(widget= forms.TextInput
+                           (attrs={'placeholder':'Enter Email'}))
+    phone = forms.CharField(widget= forms.TextInput
+                           (attrs={'placeholder':'Enter Your Phone Number'}))
+    contact_info = forms.CharField(widget= forms.Textarea
+                           (attrs={'placeholder':'Enter Description Of Your Contact'}))
+    location = forms.CharField(widget= forms.TextInput
+                           (attrs={'placeholder':'Enter Your Location'}))    
+    class Meta:
+        model = Contacts
+        fields = '__all__'

@@ -60,7 +60,8 @@ class Complaints(models.Model):
     def __str__(self):
         return f"reported by {self.reported_by}"
 
-
+    class Meta:
+        verbose_name_plural = 'Complaints'
 
 class RoomBooking(models.Model):
 
