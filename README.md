@@ -12,3 +12,6 @@ To install Follow the following procedure
 
 4. python manage.py createsuperuser
 
+5. python manage.py runserver
+
+if you are using linnux, utilize python3 manage.py .......
