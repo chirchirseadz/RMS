@@ -1,0 +1,54 @@
+
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %} RMS | List Of Apartments  {% endblock %}
+{% block content %}
+{% include 'partials/navbar.html' %}
+<br><br><br><br><br>
+<div class="container mt-5">
+    {% include 'partials/messages.html' %}
+      <div class="card-body mt-5">
+          <div class="card p-3 shadow m-3">
+              <h4 style="text-align: center;"  class=" mt-3 p-2 text-success">ROOM CATEGORIES <span class="m-3 ">
+                <a class="btn btn-success
+                " href="{% url 'add_category' %}"> Add Category </a>
+                
+                 
+          </div>
+        </div>
+  </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-" >
+      <div class="card recent-sales overflow-auto shadow">
+
+        <div class="card-body">
+          
+
+          <table class="table table-borderless datatable m-3">
+            <thead>
+              <tr>
+                <th scope="col">CATEGORY</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for category in category %}
+              <tr>
+                <td>{{category.name}}</td>
+                <td><a class="btn btn-danger" href="{% url 'delete_category' category.id %}"> Del</a></td>
+              </tr>
+
+              {% endfor  %}
+
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

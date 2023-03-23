@@ -12,15 +12,33 @@ class CustomUser(AbstractUser):
 class UserProfile(models.Model):
     name = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
     phone = models.CharField(max_length=13, null=True)
-    apartment = models.ForeignKey(Apartments, on_delete=models.CASCADE, null=True)
-    room = models.ForeignKey(Rooms, on_delete=models.CASCADE, null=True, verbose_name='Rented Room')
+    apartment = models.ForeignKey(Apartments, on_delete=models.CASCADE, null=True, blank=True)
+    room = models.ForeignKey(Rooms, on_delete=models.CASCADE, null=True, verbose_name='Rented Room', blank=True)
     address = models.CharField(max_length=50, null=True)
     profile_pic = models.ImageField(default='empty.jpg', null=True)
     created = models.DateTimeField(auto_now=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
-    
 
+    class Meta: 
+        unique_together = ('room',)
+
+    def save(self, *args, **kwargs):
+        # call the parent save() method to save the instance first
+        super(UserProfile, self).save(*args, **kwargs)
+
+        # check if a room is assigned to the user profile
+        if self.room:
+            # assign the room to the user profile
+            room = self.room
+            room.tenant = self
+            room.status = 'Not Available'
+            room.paid = True
+            room.booked = True
+            room.save()
+
+        
+        
+    
     def __str__(self):
         return f'{self.name}'
-    class Meta: 
-        unique_together = ('apartment', 'room')
+    

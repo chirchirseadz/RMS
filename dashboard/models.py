@@ -1,7 +1,7 @@
 from django.db import models
 from houses.models import *
 from users.models import *
-from datetime import datetime
+from django.db import transaction
 
 # Create your models here.
 class MessagesFromTenants(models.Model):
@@ -87,11 +87,31 @@ class AllocateRoom(models.Model):
         ('Yes', 'Yes'),
         ('No', 'No'),
     )
-    tenant = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING, null=True)
+    tenant = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, null=True)
     room = models.OneToOneField(Rooms, on_delete=models.CASCADE,null=True, unique=True)
     paid = models.CharField(max_length=10, choices=PAID, null=True)
     approved = models.BooleanField(default=False, null=True)
     allocate_date = models.DateField(auto_created=True, null=True)
 
+    
+    class Meta:
+        unique_together = ('tenant','room')
     def __str__(self):
         return f'Alocated {self.room} to {self.tenant}'
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+
+            # Get the room object
+            room = self.room            
+            # Set the room's status to "Not Available"
+            room.status = "Not Available"
+            room.paid = True
+            room.save()
+            tenant = self.tenant
+            tenant.room = room
+            tenant.apartment = room.apartment
+            tenant.save()
+
+
+            super().save(*args, **kwargs)

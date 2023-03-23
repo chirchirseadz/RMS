@@ -123,30 +123,34 @@ def contact_page(request):
     if request.method == 'POST':
         # message_sent = False
         message_form = MessagesFromTenantsForm(request.POST)
-        if message_form.is_valid():
-            your_name = message_form.cleaned_data.get('your_name')
-            email = message_form.cleaned_data.get('email')
-            subject = message_form.cleaned_data.get('subject')
-            message = message_form.cleaned_data.get('message')
-            message_form.save()
+        try:
+            if message_form.is_valid():
+                your_name = message_form.cleaned_data.get('your_name')
+                email = message_form.cleaned_data.get('email')
+                subject = message_form.cleaned_data.get('subject')
+                message = message_form.cleaned_data.get('message')
+                message_form.save()
 
-            send_mail(
-                subject,  # subject 
-                message,  # message   
-                email, # from 
-                ['EMAIL_HOST_USER'], # To email 
-                # "This is the message from  chisquare-connections  contact us page ", 
-                fail_silently = False
-                
-            )
+                send_mail(
+                    subject,  # subject 
+                    message,  # message   
+                    email, # from 
+                    ['EMAIL_HOST_USER'], # To email 
+                    # "This is the message from  chisquare-connections  contact us page ", 
+                    fail_silently = False
+                    
+                )
 
-            # message_sent = True
+                # message_sent = True
 
-            messages.success(request, 'Your message was sent successfully !')
+                messages.success(request, 'Your message was sent successfully !')
 
-            return redirect('contact')
-        
+                return redirect('contact')
+            
 
+        except:
+           messages.warning(request, 'You are currently offline !!! ' )
+           return redirect('contact')
             # return HttpResponse('<script> window.alert("Thanks for your comment")</script>')
     else:
         message_form = MessagesFromTenantsForm()

@@ -79,9 +79,11 @@ class Rooms(models.Model):
     booked = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
 
+    class Meta: 
+        unique_together = ('room', 'apartment')
 
     def __str__(self):
-        return f'Room [{self.house_number}] in [{self.apartment}] '
+        return f'Room [{self.house_number}] {self.apartment} '
     
     class Meta:
         verbose_name_plural = 'Houses'

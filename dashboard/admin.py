@@ -13,3 +13,4 @@ admin.site.register(NoticesToTenants, AdminNotices)
 
 
 admin.site.register(Complaints)
+admin.site.register(AllocateRoom)

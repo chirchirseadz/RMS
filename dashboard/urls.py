@@ -26,7 +26,15 @@ urlpatterns = [
     path('house/update/<int:id>', views.HouseUpdate, name='house_update'),
     path('house/del/<int:id>', views.DelRoom, name='house_del'),
     
+    # CREATE CATEGORIES
     
+    path('create/category/', views.AddCategory, name='add_category'),
+    path('categories/view/', views.categories, name='categories'),
+    path('categories/delete/<int:id>/', views.DeleteCategory, name='delete_category'),
+
+    #  ALLOCATE ROOM ROUTES
+    path('allocate/room/', views.AllocateRoom, name='disallocate_room'),
+
 
     # COMPLAINTS ROUTES
     path('tenants/make/complaints/', views.FileComplaint, name='make_complaint'),
@@ -49,6 +57,5 @@ urlpatterns = [
     path('make/contact/', views.create_contacts, name='create_contact'),
     path('view/contact/', views.view_contacts, name='view_contact'),
     path('del/contact/<int:id>/', views.delete_contacts, name='delete_contact'),
-
 
 ]

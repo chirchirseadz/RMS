@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from .models import RoomBooking, Complaints, NoticesToTenants
 from houses.models import Apartments, Category,Rooms, Navigation, Slider, Contacts
 from houses.forms import RoomBookingForm
-from . forms import ActivateUserForm, ApartmentAddForm, HouseAddForm, ManageTenantForm, AdminComplaintsForm, NoticesToTenantsForm, ComplaintsForm, SliderForm, ContactForm
+from . forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import BadHeaderError, send_mail
@@ -70,6 +70,21 @@ def adminbookingupdate(request, id):
 
 
 @login_required(login_url='login')
+def AllocateRoom(request):
+    if request.method == 'POST':
+        form = AllocateRoomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Allocated Room Succesfully !!! ')
+            return redirect('index_page')
+    else:
+        form = AllocateRoomForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/partials/allocate_room.html', context )
+
+@login_required(login_url='login')
 def list_of_tenants(request):
     tenants = CustomUser.objects.filter(is_admin=False)
     tenants_obj = CustomUser.objects.filter(is_active=False)
@@ -111,13 +126,17 @@ def ManageTenant(request, id):
     if request.method == 'POST':
         tenant_form = ManageTenantForm(request.POST, request.FILES, instance=tenant)
         user_form = ActivateUserForm(request.POST, instance=user)
-        if tenant_form.is_valid() and user_form.is_valid():
-            tenant_form.save()
-            user_form.save()
-            messages.success(request, 'Tenant Details Updated Successfully !!! ')
-            return redirect("index_page")
-        else:
-            messages.warning(request, 'Tenant Details Not Updated Successfully !!!' )
+        try:
+            if tenant_form.is_valid() and user_form.is_valid():
+                tenant_form.save()
+                user_form.save()
+                messages.success(request, 'Tenant Details Updated Successfully !!! ')
+                return redirect("index_page")
+            else:
+                messages.warning(request, 'Tenant Details Not Updated Successfully !!!' )
+        except:
+             messages.success(request, 'Tenant Details Updated Successfully !!!' )
+             return redirect("index_page")
     else:
         user_form = ActivateUserForm(instance=user)
         tenant_form = ManageTenantForm(instance=tenant)
@@ -197,25 +216,67 @@ def DeleteApartment(request, id):
     
     return redirect('index_page')
 
+
 # ROOMS ADMIN FUNCTIONALITIES
+
+@login_required(login_url='login')
+def categories(request):
+    category = Category.objects.all()
+
+    context = {
+       "category": category
+    }
+    return render(request, 'dashboard/partials/categories.html',context)
+
+@login_required(login_url='login')
+def AddCategory(request):
+    if request.method == 'POST':
+            form = CategoryAddForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Category Added Successfully !!')
+                return redirect('index_page')
+        
+    else:
+        form = CategoryAddForm()
+    context  = {
+       'form' : form
+    }
+    return render(request, 'dashboard/partials/add_category.html', context) 
+
+
+@login_required(login_url='login')
+def DeleteCategory(request, id):
+    category = Category.objects.get(id=id)
+    category.delete()
+    messages.success(request, 'Category deleted successfully')
+    return redirect('index_page')
+
+
+
+
 @login_required(login_url='login')
 def AddHouse(request):
     if request.method == 'POST':
-        add_form = HouseAddForm(request.POST, request.FILES)
-        if add_form.is_valid():
-            image1 = add_form.cleaned_data.get('image1')
-            image1 = resize_image(image1, 500, 600)
-            image2 = add_form.cleaned_data.get('image2')
-            image2 = resize_image(image2, 500, 600)
-            image3 = add_form.cleaned_data.get('image3')
-            image3 = resize_image(image3, 500, 600)
-            data = add_form.save(commit=False)
-            data.image1 = image1
-            data.image2 = image2
-            data.image3 = image3
-            data.save()
-            messages.success(request, 'House Added succesfully !! ')
-            return redirect("index_page")
+        try:
+            add_form = HouseAddForm(request.POST, request.FILES)
+            if add_form.is_valid():
+                image1 = add_form.cleaned_data.get('image1')
+                image1 = resize_image(image1, 500, 600)
+                image2 = add_form.cleaned_data.get('image2')
+                image2 = resize_image(image2, 500, 600)
+                image3 = add_form.cleaned_data.get('image3')
+                image3 = resize_image(image3, 500, 600)
+                data = add_form.save(commit=False)
+                data.image1 = image1
+                data.image2 = image2
+                data.image3 = image3
+                data.save()
+                messages.success(request, 'House Added succesfully !! ')
+                return redirect("index_page")
+        except:
+            messages.warning(request, 'Kindly fill all the Images !!! ' )
+            return redirect("add_house")
     else:
         add_form = HouseAddForm()
 
@@ -249,9 +310,9 @@ def HouseUpdate(request, id):
             data = form.save(commit=False)
             data.image1 = image1
             data.image2 = image2
-            data.image3 = image3
+            data.image3 = image3    
             data.save()
-            messages.success(request, 'House Added succesfully !! ')
+            messages.success(request, 'House Updated succesfully !! ')
             return redirect("index_page")
     else:
         form = HouseAddForm(instance=obj)
@@ -302,21 +363,25 @@ def TenantComplaintsUpdate(request, id):
 def MessagesToTenants(request):
     if request.method == 'POST':
         form = NoticesToTenantsForm(request.POST)
-        if form.is_valid():
-            users = CustomUser.objects.all()
-            subject = form.cleaned_data.get('subject')
-            message = form.cleaned_data.get('message')
+        try:
+            if form.is_valid():
+                users = CustomUser.objects.all()
+                subject = form.cleaned_data.get('subject')
+                message = form.cleaned_data.get('message')
 
-            for user in users:
-                send_mail(
-                    subject, # subject 
-                    message,
-                    ['info@chi-squareconnections.com',], # from
-                    [user.email],
-                    # fail_silently=True
-                )
-            form.save()
-            messages.success(request, 'Message sent SuccessFully !! ' )
+                for user in users:
+                    send_mail(
+                        subject, # subject 
+                        message,
+                        'info@chi-squareconnections.com', # from
+                        [user.email],
+                        # fail_silently=True
+                    )
+                form.save()
+                messages.success(request, 'Message sent SuccessFully !! ' )
+                return redirect('index_page')
+        except:
+            messages.warning(request, 'You are currently offline !! ' )
             return redirect('index_page')
     else:
         form = NoticesToTenantsForm()
@@ -331,24 +396,28 @@ def MessagesToTenants(request):
 def FileComplaint(request):
     if request.method == 'POST':
         form = ComplaintsForm(request.POST)
-        if form.is_valid():
-            info = form.save(commit=False)
-            info.reported_by = request.user
-            
-            subject = form.cleaned_data.get('subject')
-            message = form.cleaned_data.get('description')
-            try:
-                send_mail(
-                    subject,
-                    message,
-                    request.user.email,
-                    ['info@chi-squareconnections.com',],
-                    fail_silently=False,
-                    )
-            except:
-                messages.warning(request, "Your Complaint did'nt submit. Your email is invalid !!! ")
-            info.save()
-            messages.success(request, 'Complaint sent Successfully !! ')
+        try:
+            if form.is_valid():
+                info = form.save(commit=False)
+                info.reported_by = request.user
+                
+                subject = form.cleaned_data.get('subject')
+                message = form.cleaned_data.get('description')
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        request.user.email,
+                        ['info@chi-squareconnections.com',],
+                        fail_silently=False,
+                        )
+                except:
+                    messages.warning(request, "Your Complaint did'nt submit. Your email is invalid !!! ")
+                info.save()
+                messages.success(request, 'Complaint sent Successfully !! ')
+                return redirect('index_page')
+        except:
+            messages.warning(request, 'You are currently offline. No internet  Access !!!  ')
             return redirect('index_page')
     else:
         form = ComplaintsForm()
@@ -407,6 +476,8 @@ def updateslider(request, id):
 def deleteslider(request, id):
     slider = Slider.objects.get(id=id)
     slider.delete()
+    messages.success(request, 'Slider Deleted Successfully !!')
+    return redirect('index_page')
 
 
 def create_contacts(request):

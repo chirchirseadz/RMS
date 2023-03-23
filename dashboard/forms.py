@@ -1,7 +1,7 @@
 from django import forms
 from .models import MessagesFromTenants, AllocateRoom, NoticesToTenants, Complaints
 from users.models import  UserProfile, CustomUser
-from houses.models import Apartments, Rooms, Slider,Contacts
+from houses.models import Apartments, Rooms, Slider,Contacts, Category
 
 
 class Userform(forms.ModelForm):
@@ -82,6 +82,14 @@ class ApartmentAddForm(forms.ModelForm):
         fields = ['name', 'description', 'location', 'image',]
 
 
+
+
+class CategoryAddForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
+        
+
 class HouseAddForm(forms.ModelForm):
     class Meta:
         model = Rooms
@@ -91,7 +99,7 @@ class HouseAddForm(forms.ModelForm):
 class AllocateRoomForm(forms.ModelForm):
     
     class Meta:
-        fields = ['tenant','room', 'paid', 'approved', 'allocate_date']
+        fields = ['tenant','room', 'paid', 'approved']
         model = AllocateRoom
         widgets = {
                 'allocate_date': forms.DateInput(),
