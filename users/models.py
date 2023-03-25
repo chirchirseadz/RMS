@@ -36,9 +36,6 @@ class UserProfile(models.Model):
             room.booked = True
             room.save()
 
-        
-        
-    
     def __str__(self):
         return f'{self.name}'
     
