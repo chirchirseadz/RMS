@@ -39,3 +39,8 @@ Notifications and reports are based on the dashboard
                     {% endfor %}                   
                   
                   </tbody>
+
+
+                  stk_push_callback = 'https://api.darajambili.com/express-payment'
+# stk_push_callback = 'https://3051-41-89-240-109.eu.ngrok.io'
+b2c_callback_url = 'https://api.darajambili.com/b2c/result'

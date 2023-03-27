@@ -2,33 +2,36 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django_daraja.mpesa.core import MpesaClient
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
-from .models import RentPayments
+from .models import RentPayments, MpesaOnline
 from users.models import UserProfile
 from .forms import RentPaymentsForm
 
+import json
 
 # Create your views here.
 cl = MpesaClient()
-stk_push_callback_url = 'https://api.darajambili.com/express-payment'
+# stk_callback_url = 'https://api.darajambili.com/express-payment'
+stk_callback_url = 'https://conor.serveo.net/rents/pay/rent/call_back'
 b2c_callback_url = 'https://api.darajambili.com/b2c/result'
-
+    
 @login_required(login_url='login')
 @csrf_exempt
 def stk_push_success(request):
     tenant = request.user
     phone_number = tenant.userprofile.phone
     room = tenant.userprofile.room
-    amount = room.price
+    # amount = room.price
+    amount = 1
     account_reference = f'Accura Management {tenant.userprofile.room}'
     transaction_desc = f'Rent payment for {tenant.userprofile.room}'
-    callback_url = stk_push_callback_url
+    callback_url = stk_callback_url
 
     if request.method == 'POST':
         form = RentPaymentsForm(request.POST)
-
         if form.is_valid():
             # Create a new RentPayments object but don't save it yet
             transaction = form.save(commit=False)
@@ -49,13 +52,13 @@ def stk_push_success(request):
                 transaction.transaction_id = response.json()['MerchantRequestID']
                 transaction.save()
 
-                return HttpResponse('Confirmation info is sent !!! ')
+                return HttpResponse('Confirmation info is sent. Enter Your pin  !!! ')
             else:
                 # STK push failed, update transaction status and save it
                 transaction.status = 'FAILED'
                 transaction.save()
 
-                return redirect('failure_page')
+                return HttpResponse('Failed')
 
     else:
         form = RentPaymentsForm()
@@ -66,33 +69,38 @@ def stk_push_success(request):
 
     return render(request, 'rents.html', context)
 
+@csrf_exempt
+def stk_push_callback(request):
+    get_body = request.body
+    data = json.loads(get_body)
+    return_data = data['Body']['stkCallback']
+    
+    try:
+        started_pay = MpesaOnline.objects.get(
+            CheckoutRequestID=return_data['CheckoutRequestID'],
+        )    
+        started_pay.MerchantRequestID = return_data['MerchantRequestID']
+        started_pay.ResultCode = return_data['ResultCode']
+        started_pay.ResultDesc = return_data['ResultDesc']
+        started_pay.Amount = return_data['CallbackMetadata']['Item'][0]['Value']
+        started_pay.MpesaReceiptNumber = return_data['CallbackMetadata']['Item'][1]['Value']
+        started_pay.TransactionDate = return_data['CallbackMetadata']['Item'][3]['Value']
+        started_pay.PhoneNumber = return_data['CallbackMetadata']['Item'][4]['Value']
+        started_pay.save()
+    except ObjectDoesNotExist:
+        pay = MpesaOnline(
+            MerchantRequestID = return_data['MerchantRequestID'],
+            CheckoutRequestID = return_data['CheckoutRequestID'],
+            ResultCode = return_data['ResultCode'],
+            ResultDesc = return_data['ResultDesc'],
+            Amount = return_data['CallbackMetadata']['Item'][0]['Value'],
+            MpesaReceiptNumber = return_data['CallbackMetadata']['Item'][1]['Value'],
+            TransactionDate = return_data['CallbackMetadata']['Item'][3]['Value'],
+            PhoneNumber = return_data['CallbackMetadata']['Item'][4]['Value'],
+            )
+        pay.save()
 
-# # from django.views.decorators.csrf import csrf_exempt
-# # from django.http import HttpResponse
-# # from .models import RentPayments
-
-# @csrf_exempt
-# def stk_push_callback(request):
-#     if request.method == 'POST':
-#         # Extract data from the request
-#         transaction_id = request.POST.get('TransID')
-#         phone_number = request.POST.get('MSISDN')
-#         amount = request.POST.get('TransAmount')
-#         account_reference = request.POST.get('BillRefNumber')
-#         transaction_date = request.POST.get('TransTime')
-
-#         # Update the transaction record with the STK push details
-#         try:
-#             transaction = RentPayments.objects.get(transaction_id=transaction_id)
-#             transaction.phone_number = phone_number
-#             transaction.amount = amount
-#             transaction.account_reference = account_reference
-#             transaction.transaction_date = transaction_date
-#             transaction.status = 'COMPLETED'
-#             transaction.save()
-#         except RentPayments.DoesNotExist:
-#             # Handle the case where the transaction ID is not found
-#             pass
-
-#     # Return an empty response
-#     return HttpResponse('')
+    context = {
+        "status": "completed",
+    }
+    return JsonResponse(dict(context))

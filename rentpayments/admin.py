@@ -3,4 +3,5 @@ from . models import *
 
 # Register your models here.
 admin.site.register(RentPayments)
+admin.site.register(MpesaOnline)
 admin.site.register(Year)
