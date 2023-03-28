@@ -15,7 +15,7 @@ import json
 # Create your views here.
 cl = MpesaClient()
 # stk_callback_url = 'https://api.darajambili.com/express-payment'
-stk_callback_url = 'https://conor.serveo.net/rents/pay/rent/call_back'
+stk_callback_url = 'https://54a7-41-89-240-109.eu.ngrok.io/rents/pay/rent/call_back'
 b2c_callback_url = 'https://api.darajambili.com/b2c/result'
     
 @login_required(login_url='login')
@@ -104,3 +104,39 @@ def stk_push_callback(request):
         "status": "completed",
     }
     return JsonResponse(dict(context))
+
+
+
+# from django.views.decorators.csrf import csrf_exempt
+# from django.http import HttpResponseBadRequest
+
+# @csrf_exempt
+# def stk_push_callback(request):
+#     if request.method == 'GET':
+#         # Extract the transaction details from the request
+#         transaction_id = request.GET.get('TransactionID')
+#         phone_number = request.GET.get('MSISDN')
+#         amount = request.GET.get('TransAmount')
+#         result_code = request.GET.get('ResultCode')
+#         result_desc = request.GET.get('ResultDesc')
+
+#         # Perform any necessary validation on the transaction details
+#         if result_code != '0':
+#             return HttpResponseBadRequest('Transaction failed: {}'.format(result_desc), result_code)
+
+#         # Create a new instance of the transaction model and save it to the database
+#         transaction = MpesaOnline.objects.create(
+#             MerchantRequestID=transaction_id,
+#             PhoneNumber=phone_number,
+#             Amount=amount,
+#             ResultCode=result_code,
+#             ResultDesc=result_desc,
+#         )
+#         transaction.save()
+
+#         # Return a success response to the M-PESA server
+#         return HttpResponse('Transaction saved successfully')
+#     else:
+#         return HttpResponseBadRequest('Invalid request method')
+
+
