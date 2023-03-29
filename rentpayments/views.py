@@ -24,8 +24,8 @@ def stk_push_success(request):
     tenant = request.user
     phone_number = tenant.userprofile.phone
     room = tenant.userprofile.room
-    # amount = room.price
-    amount = 1
+    amount = room.price
+    # amount = 1
     account_reference = f'Accura Management {tenant.userprofile.room}'
     transaction_desc = f'Rent payment for {tenant.userprofile.room}'
     callback_url = stk_callback_url
@@ -73,6 +73,7 @@ def stk_push_success(request):
 def stk_push_callback(request):
     get_body = request.body
     data = json.loads(get_body)
+    print(data)
     return_data = data['Body']['stkCallback']
     
     try:
@@ -103,7 +104,7 @@ def stk_push_callback(request):
     context = {
         "status": "completed",
     }
-    return JsonResponse(dict(context))
+    return JsonResponse(data)
 
 
 
