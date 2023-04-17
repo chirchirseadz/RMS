@@ -8,6 +8,18 @@
   #card :hover{
     transform: translateY(3px);
   }
+  #rents{
+  transform: translateY(-130%);
+  }
+
+  @media only screen and (max-width: 600px) {
+    #rents{
+        transform: translateY(0);
+    }
+    #rent-card{
+      margin-top: 330%;
+    }
+}
 </style>
 
 <link href="{% static 'assets1/css/style.css' %}" rel="stylesheet">
@@ -145,30 +157,37 @@
               </a>
             </div>
           </div>
-          <!-- <div class="col-xxl-3 col-md-3">  
-            <div class="card info-card sales-card shadow"> -->
-              <!-- This is the start of Users -->
-              <!-- <a href="">
-                <div class="card-body">
-                  <h5 class="card-title"> Tenant Notifications</h5>
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people  text-success"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>{{number_of_users}}</h6>
+       
+
+          <div id="rent-card" class="row">
+            <div class="col-lg-3"></div>
+            <div id="rent-card" class="col-lg-9 mt-5">
+              <div id="rents" class=" mt-5 card info-card sales-card shadow">
+                <!-- This is the start of Users -->
+                <a href="{% url 'manage_rents' %}">
+                  <div id="rent-card" class="card-body w-100">
+                    <h3 style="font-family: 'Times New Roman', Times, serif;" class="text-success"> Track And Manage Rents </h3>
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-people  text-success"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{number_of_users}}</h6>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a> -->
-            <!-- </div>
-          </div> -->
+                </a>
+              </div>
+            </div>
+            
+          </div>
       </div>
           <!-- ANOTHER ROW -->
         
          <!-- #####################################################################################  -->
          
-            <div class="card recent-sales overflow-auto shadow">
+           <div class="container">
+            <div style="transform: translateY(-110px);" class="card recent-sales overflow-auto shadow">
   
               <div class="card-body">
                 <h5 class="card-title">Recent Room Booking Requests<span>| Today</span></h5>
@@ -214,6 +233,7 @@
   
             </div>
          
+           </div>
           <!-- ############################################################################################# -->
           </div>  
       </div>

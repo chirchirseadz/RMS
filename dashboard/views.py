@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import BadHeaderError, send_mail
 from django.db import transaction
 from houses.forms import AdminBookingUpdateForm
+from rentpayments.models import MpesaOnlinePayments, RentDetails, RentPayments, TenantRentPayments
 from . utils import resize_image
 
 # Create your views here.
@@ -86,6 +87,7 @@ def AllocateRoom(request):
 
 @login_required(login_url='login')
 def list_of_tenants(request):
+    
     tenants = CustomUser.objects.filter(is_admin=False)
     tenants_obj = CustomUser.objects.filter(is_active=False)
     number_of_inactive_tenants = tenants_obj.count()
@@ -93,6 +95,7 @@ def list_of_tenants(request):
     context = {
         'number_of_tenants': number_of_tenants,
         'tenants': tenants,
+        
         'number_of_inactive_tenants': number_of_inactive_tenants,
     }
     return render(request, 'dashboard/partials/list_of_tenants.html', context )
@@ -517,6 +520,143 @@ def contacts(request):
     return {
         'contacts': Contacts.objects.all()
     }
+
+# MANAGE RENTS 
+
+def ManageRents(request):
+    return render(request, 'dashboard/rents/dashboard.html')
+
+def create_rent_details(request):
+    
+    if request.method == 'POST':
+        form = RentDetailsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Rents Details Created succesfully !!')
+            return redirect('manage_rents')
+    else:
+        form = RentDetailsForm(request.POST)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/rents/create_rent_details.html', context)
+
+
+def rentdetails(request):
+    rent_details = RentDetails.objects.all()
+    context = {
+        'rent_details': rent_details
+    }
+    return render(request, 'dashboard/rents/rent_details.html', context)
+
+
+def edit_rent_detail(request, id):
+    rent_details = RentDetails.objects.get(id=id)
+    if request.method == 'POST':
+        form = RentDetailsForm(request.POST, instance=rent_details)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Rent Details Updated  successfully !!! ')
+            return redirect('manage_rents')
+        
+    else:
+        form = RentDetailsForm(instance=rent_details)
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/rents/edit_rent_detail.html', context)
+
+
+def delete_rent_detail(request, id):
+    rent = RentDetails.objects.get(id=id)
+    rent.delete()
+    messages.success(request, 'Rent detail Deleted Successfully !!')
+    return redirect('manage_rents')
+
+# ONLINE PAYMENTS 
+
+def onlineRentPayments(request):
+    payments = MpesaOnlinePayments.objects.all()
+    context = {
+        'payments': payments
+    }
+    # MpesaOnlinePaymentsConfirmationForm
+    return render(request, 'dashboard/rents/online_payments.html', context)
+
+
+def onlineRentPaymentsconfirmations(request, id):
+    payment_odj = MpesaOnlinePayments.objects.get(id=id)
+    if request.method == "POST":
+        form = MpesaOnlinePaymentsConfirmationForm(request.POST, instance=payment_odj)
+        if form.is_valid():
+            form.save()
+            messages.success
+            return redirect('view_rents')
+    else:
+        form = MpesaOnlinePaymentsConfirmationForm(instance=payment_odj)
+    context = {
+        'form': form
+    }
+    # MpesaOnlinePaymentsConfirmationForm
+    return render(request, 'dashboard/rents/online_payments_confirm.html', context)
+
+
+def createofflineRentPayments(request):
+    if request.method == 'POST':
+        form = offlinePaymentsCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Payments Created Successfully')
+            return redirect('manage_rents')
+    else:
+        form = offlinePaymentsCreationForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/rents/create_offline_payments.html', context)
+
+def offlineRentPayments(request):
+    payments = TenantRentPayments.objects.all()
+    context = {
+        'payments': payments
+    }
+    # MpesaOnlinePaymentsConfirmationForm
+    return render(request, 'dashboard/rents/offline_payments.html', context)
+
+
+def offlineRentPaymentsConfirmation(request, id):
+    payment = TenantRentPayments.objects.get(id=id)
+    if request.method == 'POST':
+        form = offlinePaymentsConfirmForm(request.POST, instance=payment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Payments Updated  Successfully')
+            return redirect('view_offline_rents')
+    else:
+        form = offlinePaymentsConfirmForm(instance=payment)
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/rents/offline_payments_confirmation.html', context)
+
+def onlineRentPaymentsconfirmations(request, id):
+    payment_odj = MpesaOnlinePayments.objects.get(id=id)
+    if request.method == "POST":
+        form = MpesaOnlinePaymentsConfirmationForm(request.POST, instance=payment_odj)
+        if form.is_valid():
+            form.save()
+            messages.success
+            return redirect('view_rents')
+    else:
+        form = MpesaOnlinePaymentsConfirmationForm(instance=payment_odj)
+    context = {
+        'form': form
+    }
+    # MpesaOnlinePaymentsConfirmationForm
+    return render(request, 'dashboard/rents/online_payments_confirm.html', context)
+
+
 
 # def MessagesToTenantsUpdate(request, id):
 #     return render(request, 'dashboard/partials/complaints_update.html', context)

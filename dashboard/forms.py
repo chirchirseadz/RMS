@@ -2,7 +2,7 @@ from django import forms
 from .models import MessagesFromTenants, AllocateRoom, NoticesToTenants, Complaints
 from users.models import  UserProfile, CustomUser
 from houses.models import Apartments, Rooms, Slider,Contacts, Category
-
+from rentpayments.models import MpesaOnlinePayments, RentDetails, RentPayments, TenantRentPayments
 
 class Userform(forms.ModelForm):
     firstname= forms.CharField(widget= forms.TextInput
@@ -129,3 +129,36 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contacts
         fields = '__all__'
+
+
+# RENTS FORMS
+
+class RentDetailsForm(forms.ModelForm):
+    class Meta:
+        model = RentDetails
+        fields  = '__all__'
+        exclude = ['added', 'updated']
+
+        widgets = {
+                'start_date': forms.DateInput(),
+                'end_date': forms.DateInput(),
+                'due_date': forms.DateInput(),
+
+            }
+
+class MpesaOnlinePaymentsConfirmationForm(forms.ModelForm):
+    class Meta:
+        model = MpesaOnlinePayments
+        fields = ['Approved']
+
+        
+
+class offlinePaymentsCreationForm(forms.ModelForm):
+    class Meta:
+        model = TenantRentPayments
+        fields = '__all__'
+
+class offlinePaymentsConfirmForm(forms.ModelForm):
+    class Meta:
+        model = TenantRentPayments
+        fields = ['confirmed',]

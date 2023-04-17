@@ -58,4 +58,22 @@ urlpatterns = [
     path('view/contact/', views.view_contacts, name='view_contact'),
     path('del/contact/<int:id>/', views.delete_contacts, name='delete_contact'),
 
+    # MANAGE RENTS ROUTES 
+    # creating rent details 
+    path('manage/rents/', views.ManageRents, name='manage_rents'),
+    path('create/rent/details/', views.create_rent_details, name='create_rent_details'),
+    path('view/rent/details/', views.rentdetails, name='view_rent_details'),
+    path('edit/rent/details/<int:id>/', views.edit_rent_detail, name='edit_rent_detail'),
+    path('del/rent/details/<int:id>/', views.delete_rent_detail, name='del_rent_detail'),
+
+    # rent online payments 
+    path('view/rents/', views.onlineRentPayments, name='view_rents'),
+    path('confirm/rent/details/<int:id>/', views.onlineRentPaymentsconfirmations, name='confirm_online_rent'),
+
+    # Rents Offline payments 
+    path('create/view/rents/', views.createofflineRentPayments, name='create_rents'),
+    path('view/offline/rents/', views.offlineRentPayments, name='view_offline_rents'),
+    path('confirm/offline/rents/<int:id>/', views.offlineRentPaymentsConfirmation, name='confirm_offline_rents'),
+    
+    
 ]

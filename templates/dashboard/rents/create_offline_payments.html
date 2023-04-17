@@ -1,0 +1,27 @@
+{% extends 'partials/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}RMS | Create | Rent | Payments {% endblock %}
+{% block content %}
+{% include 'partials/navbar.html' %}
+<section>
+    <div class="container py-5">
+      <br><br>
+    <div class="row "> 
+     <div class="col-md-2"></div>
+      <div class="col-lg-8">
+        <div class="row mt-lg-5">
+            <h1 style="text-align: center;" class="text-success mt-lg-5"> CREATE NEW PAYMENTS</h1>
+          <div class="col mt-5">
+            {% include 'partials/messages.html' %} 
+          </div>
+        </div>
+        <form method="post"><hr>
+          {% csrf_token %}
+          {{form|crispy}} <hr>
+          <input class="btn btn-success m-3 w-100" type="submit" value=" RENT DETAILS ">
+      </form>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -83,7 +83,7 @@ class Rooms(models.Model):
         unique_together = ('room', 'apartment')
 
     def __str__(self):
-        return f'Room [{self.house_number}] {self.apartment} '
+        return f'[--Room [{self.house_number}] {self.apartment}---] '
     
     class Meta:
         verbose_name_plural = 'Houses'

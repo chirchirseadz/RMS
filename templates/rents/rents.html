@@ -1,0 +1,72 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} RMS | Manage | Rents {% endblock %}
+{% block content %}
+
+{% include 'partials/navbar.html' %}
+
+
+
+<div class="container  p-lg-5 mt-lg-5">
+    {% include 'partials/messages.html' %}
+     <div class="row p-3">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8">
+        <div class="card mt-lg-5 btn-danger shadow p-lg-2">
+          <div class="card-body ">
+                <hr>
+                <a class="btn btn-info  w-100 mt-lg-1 " href="{% url 'rents_details' %}">RENT DETAILS  </a></span></h4>
+                <hr>
+                <a class="btn btn-success  w-100 mt-lg-1 " href="{% url 'online_rent_list' %}">MY ONLINE RENT PAYMENTS </a></span></h4>
+                <hr>
+                <a class="btn btn-success  w-100 mt-lg-1 " href="{% url 'offline_rent_list' %}">HANDSET  RENT PAYMENTS </a></span></h4>
+                <hr>
+                <a class="btn btn-dark w-100" href="{% url 'pay_rent' %}">PAY RENT</a>
+                <hr>
+                
+          </div>
+          
+        </div> 
+
+      </div>
+      <div class="col-lg-2"></div>
+     </div>
+        
+  </div>
+
+    
+  
+  
+</div>
+
+
+
+
+
+{% endblock %}
+
+<th scope="col">Rent Details</th>
+<th scope="col">Merchant Request ID</th>
+<th scope="col">Checkout Request ID</th>
+<th scope="col">Mpesa Receipt Number</th>
+<th scope="col">Transaction Date</th>
+<th scope="col">Mpesa Receipt Number</th>
+<th scope="col">Amount</th>
+<th scope="col">Approved</th>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br>
+<h1> My These are online payments </h1><br>
+{% for rents in lipa_na_mpesa_rents %}
+{{rents}}
+{% endfor %}
+
+<br>
+<h1> My These are Handset payments </h1>
+{% for rents in handset_payments_rents %}
+{{rents}}
+{% endfor %}
+
+

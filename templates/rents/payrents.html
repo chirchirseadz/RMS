@@ -1,0 +1,58 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Pay Rent Page {% endblock %}
+{% block content %}
+
+{% include 'partials/navbar.html' %}
+<style>
+     label{
+        font-weight: 900;
+        text-align: center;
+        margin-left: -30;
+     }
+      /*
+    input{
+        color: green;
+    }
+    img{
+        margin-top: 30px;
+    } */
+</style>
+<div style="margin-top: 10%;" class="container">
+    <div class="row mt-lg-">
+        <div class="col-lg-4 mt-lg-5"></div>
+        <div class="col-lg-5 mt-lg-2">
+            
+            <div class="card text-center m-1 mt-5 p-3 shadow">
+                {% include 'partials/messages.html' %}
+                <h5 style="text-transform: uppercase;" class="text-success">Make your monthly rents here </h5>
+                <img style="width: 55%; margin: 0 auto;" src="{% static '/images/mpesa.png' %}" alt="">
+                <form  method="post">
+                   
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <input class="btn btn-success w-100 p-2 btn-sm"  type="submit" value="Pay Your Rent">
+                </form>
+            </div>
+    
+        </div>
+        
+        <div class="col-lg-3 mt-lg-5"></div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+<!-- <h1>This is Rents Payment page page</h1>
+
+
+
+<h1> pay rents </h1>
+
+<form  method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Pay">
+</form> -->

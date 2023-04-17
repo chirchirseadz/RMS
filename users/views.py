@@ -48,3 +48,6 @@ def ProfileUpdate(request):
         'user_form': user_form,
     }
     return render(request, 'users/update_profile.html', context)
+
+
+
